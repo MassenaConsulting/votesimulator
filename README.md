@@ -97,6 +97,7 @@ Source: https://dadosabertos.tse.jus.br/dataset/resultados-2026-boletim-de-urna
 - Recommended custom dimensions (Admin > Custom definitions, event scope): `language`, `setting`, `value`, `button_id`, `scenario`, `order`, `theory`. Without them these parameters do not show in reports.
 
 ## Interactive charts
+The "current leader" box shows the leader and the leader's % of valid votes; hover (or focus) it to see the latest valid-vote details of every candidate (final result once the count ends).
 Hover (or touch) any chart: a vertical line shows the ballot boxes counted, the cumulative votes and the % of each series, and the gap between the 1st and the 2nd.
 
 ## Senators Theory

@@ -256,7 +256,8 @@
       <div class="stats">
         <div class="stat"><b id="sUrnas">0 / 0</b><span data-i18n="stat.boxes">ballot boxes counted</span></div>
         <div class="stat"><b id="sVotos">0</b><span data-i18n="stat.votes">votes counted</span></div>
-        <div class="stat"><b id="sLider">–</b><span data-i18n="stat.leader">current leader</span></div>
+        <div class="stat stat-leader" tabindex="0" aria-describedby="sLiderTip"><b id="sLider">–</b><span id="sLiderLbl">current leader</span>
+          <div class="stat-tip" id="sLiderTip" role="tooltip"></div></div>
         <div class="stat"><b id="sViradas">0</b><span data-i18n="stat.swaps">lead changes</span></div>
       </div>
       <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="prog"><div id="progBar"></div></div>

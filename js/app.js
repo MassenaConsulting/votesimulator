@@ -245,6 +245,15 @@
     $('sUrnas').textContent = fmt.format(cursor) + ' / ' + fmt.format(urnas.N);
     $('sVotos').textContent = fmt.format(Math.round(soma + brancos + nulos));
     $('sLider').textContent = cursor && soma ? urnas.series[lider].nome.split(' (')[0] : '–';
+    // leader box: name, % of valid votes of the leader, and (mouse over / focus) the latest valid-vote details
+    $('sLiderLbl').textContent = cursor && soma ? tr('stat.leader') + ': ' + I.pct(cum[lider] / soma * 100, 2) : tr('stat.leader');
+    $('sLiderTip').innerHTML = cursor && soma
+      ? '<strong>' + tr(cursor >= urnas.N ? 'stat.tipFinal' : 'stat.tipNow') + '</strong><small>' + fmt.format(cursor) + ' / ' + fmt.format(urnas.N) + ' ' + tr('stat.boxes') + '</small>' +
+        urnas.series.map(function (s, k) {
+          return '<div class="tip-row' + (k === lider ? ' lead' : '') + '"><i style="background:' + s.cor + '"></i><span>' + s.nome + '</span><b>' + I.pct(cum[k] / soma * 100, 2) + '</b><em>' + fmt.format(Math.round(cum[k])) + '</em></div>';
+        }).join('') +
+        '<small>' + tr('stat.tipValid') + ': ' + fmt.format(Math.round(soma)) + '</small>'
+      : '<small>' + tr('stat.tipEmpty') + '</small>';
     $('sViradas').textContent = viradas;
     $('progBar').style.width = p + '%'; $('prog').setAttribute('aria-valuenow', p.toFixed(0));
     $('tabela').innerHTML = urnas.series.map(function (s, k) {

@@ -97,6 +97,7 @@ Fonte: https://dadosabertos.tse.jus.br/dataset/resultados-2026-boletim-de-urna
 - Dimensões personalizadas recomendadas (Admin > Definições personalizadas, escopo de evento): `language`, `setting`, `value`, `button_id`, `scenario`, `order`, `theory`. Sem elas, esses parâmetros não aparecem nos relatórios.
 
 ## Gráficos interativos
+O box "líder atual" mostra o líder e o % de votos válidos dele; passe o mouse (ou foque) nele para ver os detalhes mais recentes dos votos válidos de cada candidato (resultado final quando a apuração termina).
 Passe o mouse (ou toque) sobre qualquer gráfico: aparece a linha vertical com urnas apuradas, votos acumulados e % de cada série, e a diferença entre 1º e 2º.
 
 ## Teoria dos Senadores
