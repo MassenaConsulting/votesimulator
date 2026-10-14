@@ -1,6 +1,6 @@
 /*
  * Vote Simulator - UI translations (pt-BR / en-US)
- * Copyright (C) 2026 Massena Consulting LLC, Delaware, USA. All rights reserved.
+ * Copyright (C) 2026 Massena Consulting LLC, Delaware, USA. Licensed under the MIT License (see LICENSE).
  *
  * Study project, provided "AS IS", without warranty of any kind. Massena Consulting LLC is not
  * responsible for errors, inaccuracies or any consequence of using it.
@@ -23,7 +23,7 @@
       'header.study': 'This project was built for study purposes, although it uses real, public data obtained from the TSE website.',
       'header.langs': 'This site is available in two languages: English (en-US) and Portuguese (pt-BR). Use the language selector to switch.',
       'lang.label': 'Language / Idioma',
-      'footer.copy': 'Massena Consulting LLC, Delaware, USA © 2026. All rights reserved.',
+      'footer.copy': 'Massena Consulting LLC, Delaware, USA © 2026. Open source under the MIT License.',
 
       'cfg.title': 'Settings',
       'cfg.scenario': 'Scenario',
@@ -146,7 +146,7 @@
       'warn.data': 'The numbers come from public files of the TSE (the Brazilian Superior Electoral Court). This project is not connected to the TSE and is not approved by it.',
       'warn.asis': 'This is a study project, offered "as is". It can have mistakes, and Massena Consulting LLC is not responsible for errors or for anything that happens because someone used it.',
       'warn.analytics': 'This site uses Google Analytics to count visits and clicks (anonymous usage data, such as which buttons are used). It does not collect what you type.',
-      'warn.rights': '© 2026 Massena Consulting LLC, Delaware, USA. All rights reserved.',
+      'warn.rights': '© 2026 Massena Consulting LLC, Delaware, USA. This project is open source under the MIT License: you can use, copy, modify and share it, as long as you keep the copyright notice.',
       'warn.noPrediction': 'Nothing here predicts or proves anything about elections. It is only a way to learn how counting charts behave.',
       'how.title': 'How does the app work? (explained like you are 8 years old)',
       'how.p1': 'In Brazil, people vote on a machine called an "urna" (ballot box). Each urna keeps the votes of one small group of people. When voting ends, each urna sends its numbers to the TSE, like a classroom sending its score to the school.',
@@ -203,7 +203,7 @@
       'header.study': 'Esse projeto foi construído para fins de estudo, apesar de usar dados reais e públicos obtidos através do site do TSE.',
       'header.langs': 'Este site está disponível em duas línguas: português (pt-BR) e inglês (en-US). Use o seletor de idioma para alternar.',
       'lang.label': 'Idioma / Language',
-      'footer.copy': 'Massena Consulting LLC, Delaware, USA © 2026. Todos os direitos reservados.',
+      'footer.copy': 'Massena Consulting LLC, Delaware, USA © 2026. Código aberto sob a Licença MIT.',
 
       'cfg.title': 'Configuração',
       'cfg.scenario': 'Cenário',
@@ -326,7 +326,7 @@
       'warn.data': 'Os números vêm de arquivos públicos do TSE (Tribunal Superior Eleitoral). Este projeto não tem ligação com o TSE e não foi aprovado por ele.',
       'warn.asis': 'Este é um projeto de estudo, oferecido "no estado em que se encontra". Pode ter erros, e a Massena Consulting LLC não se responsabiliza por erros nem por qualquer coisa que aconteça por causa do uso.',
       'warn.analytics': 'Este site usa o Google Analytics para contar visitas e cliques (dados de uso anônimos, como quais botões são usados). Ele não coleta o que você digita.',
-      'warn.rights': '© 2026 Massena Consulting LLC, Delaware, USA. Todos os direitos reservados.',
+      'warn.rights': '© 2026 Massena Consulting LLC, Delaware, USA. Este projeto é código aberto sob a Licença MIT: você pode usar, copiar, modificar e compartilhar, desde que mantenha o aviso de direitos autorais.',
       'warn.noPrediction': 'Nada aqui prevê nem prova algo sobre eleições. É só um jeito de aprender como os gráficos de apuração se comportam.',
       'how.title': 'Como o app funciona? (explicado como se você tivesse 8 anos)',
       'how.p1': 'No Brasil, as pessoas votam numa máquina chamada urna. Cada urna guarda os votos de um grupinho de pessoas. Quando a votação termina, cada urna manda seus números para o TSE, como uma sala de aula mandando a nota para a escola.',

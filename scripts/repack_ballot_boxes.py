@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # Vote Simulator - repacks ballot-box data files from format 1 to format 2
-# Copyright (C) 2026 Massena Consulting LLC, Delaware, USA. All rights reserved.
+# Copyright (C) 2026 Massena Consulting LLC, Delaware, USA. Licensed under the MIT License (see LICENSE).
 #
 # Study project, provided "AS IS", without warranty of any kind. Massena Consulting LLC is not
 # responsible for errors, inaccuracies or any consequence of using it.

@@ -1,6 +1,6 @@
 <!--
   Vote Simulator - README (Português do Brasil)
-  Copyright (C) 2026 Massena Consulting LLC, Delaware, USA. Todos os direitos reservados.
+  Copyright (C) 2026 Massena Consulting LLC, Delaware, USA. Licenciado sob a Licença MIT (veja LICENSE).
 
   Projeto de estudo, fornecido "NO ESTADO EM QUE SE ENCONTRA", sem garantia de qualquer tipo. A Massena Consulting LLC não se
   responsabiliza por erros, imprecisões ou qualquer consequência do seu uso.
@@ -109,7 +109,9 @@ Hipótese: quem votou em senador do PL não vota em Lula; quem votou em senador 
 - **Time dos 2 senadores (1º ou 2º)** (2026, 2 votos por eleitor): algum PL (sem PT) = Bolsonaro; algum PT (sem PL) = Lula; um PL e um PT = Indecisos (série própria); nenhum dos dois = Outro. Dentro de cada urna os 2 votos são tratados como independentes: P(só PL) = 1-(1-pl)^2-2*pl*pt; P(só PT) = 1-(1-pt)^2-2*pl*pt; P(ambos) = 2*pl*pt.
 - Resultado 2026: PL 34,8% - PT 14,3% - Indecisos 4,7% - Outro 46,2%.
 
-## Aviso e direitos
-Copyright (C) 2026 Massena Consulting LLC, Delaware, USA. Todos os direitos reservados.
+## Aviso e licença
+Código aberto sob a [Licença MIT](LICENSE). Código-fonte: https://github.com/MassenaConsulting/votesimulator. Contribuições e forks são bem-vindos.
+
+Copyright (C) 2026 Massena Consulting LLC, Delaware, USA. Licenciado sob a Licença MIT (veja LICENSE).
 
 Projeto de estudo, fornecido "NO ESTADO EM QUE SE ENCONTRA", sem garantia de qualquer tipo. A Massena Consulting LLC não se responsabiliza por erros, imprecisões ou qualquer consequência do seu uso. Os dados eleitorais são públicos e vêm do Tribunal Superior Eleitoral (TSE); este projeto não tem vínculo com o TSE nem é endossado por ele.

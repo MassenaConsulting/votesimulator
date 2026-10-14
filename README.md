@@ -1,6 +1,6 @@
 <!--
   Vote Simulator - README (English)
-  Copyright (C) 2026 Massena Consulting LLC, Delaware, USA. All rights reserved.
+  Copyright (C) 2026 Massena Consulting LLC, Delaware, USA. Licensed under the MIT License (see LICENSE).
 
   Study project, provided "AS IS", without warranty of any kind. Massena Consulting LLC is not
   responsible for errors, inaccuracies or any consequence of using it.
@@ -109,7 +109,9 @@ Hypothesis: whoever voted for a PL senator does not vote for Lula; whoever voted
 - **Two-senator team (1st or 2nd)** (2026, 2 votes per voter): any PL (without PT) = Bolsonaro; any PT (without PL) = Lula; one PL and one PT = Undecided (own series); neither = Other. Inside each box the 2 votes are treated as independent: P(PL only) = 1-(1-pl)^2-2*pl*pt; P(PT only) = 1-(1-pt)^2-2*pl*pt; P(both) = 2*pl*pt.
 - 2026 result: PL 34.8% - PT 14.3% - Undecided 4.7% - Other 46.2%.
 
-## Notice and rights
-Copyright (C) 2026 Massena Consulting LLC, Delaware, USA. All rights reserved.
+## Notice and license
+Open source under the [MIT License](LICENSE). Source code: https://github.com/MassenaConsulting/votesimulator. Contributions and forks are welcome.
+
+Copyright (C) 2026 Massena Consulting LLC, Delaware, USA. Licensed under the MIT License (see LICENSE).
 
 This is a study project, provided "AS IS", without warranty of any kind. Massena Consulting LLC is not responsible for errors, inaccuracies or any consequence of using it. The election data are public and come from the Brazilian Superior Electoral Court (TSE); this project is not affiliated with or endorsed by the TSE.
