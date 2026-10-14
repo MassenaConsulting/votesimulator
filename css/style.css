@@ -59,8 +59,10 @@ dialog::backdrop { background: rgba(10, 14, 22, .6); }
 .modal-foot button { min-width: 200px; }
 footer { max-width: 1200px; margin: 0 auto; padding: 8px 16px 24px; color: var(--muted); font-size: .85rem; text-align: center; }
 footer p { margin: 0; }
-main { display: grid; grid-template-columns: 300px 1fr; gap: 16px; padding: 16px;
+main { display: grid; grid-template-columns: 300px minmax(0, 1fr); gap: 16px; padding: 16px;
   max-width: 1200px; margin: 0 auto; }
+main > *, .stack > .card { min-width: 0; }
+.stack > .card { overflow-x: auto; }
 .card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 14px; }
 .card h2 { margin: 0 0 10px; font-size: 1rem; }
 label { display: block; font-size: .85rem; color: var(--muted); margin: 10px 0 3px; }
@@ -89,12 +91,12 @@ th, td { text-align: right; padding: 6px 8px; border-bottom: 1px solid var(--bor
 th:first-child, td:first-child { text-align: left; }
 td.bar { width: 28%; }
 .barra { height: 10px; border-radius: 3px; min-width: 1px; }
-.stack { display: grid; gap: 16px; }
+.stack { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; }
 .check { display: flex; align-items: center; gap: 6px; margin-top: 10px; font-size: .85rem; color: var(--muted); }
 .check input { width: auto; }
 .aviso { color: #b45309; font-size: .82rem; margin-top: 6px; }
 @media (max-width: 860px) {
-  main { grid-template-columns: 1fr; }
+  main { grid-template-columns: minmax(0, 1fr); }
   .stats { grid-template-columns: repeat(2, 1fr); }
 }
 @media (prefers-reduced-motion: reduce) { .progress div { transition: none; } }
