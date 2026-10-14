@@ -102,13 +102,15 @@ Passe o mouse (ou toque) sobre qualquer gráfico: aparece a linha vertical com u
 
 ## Teoria dos Senadores
 Hipótese: quem votou em senador do PL não vota em Lula; quem votou em senador do PT não vota em Bolsonaro.
-- App (cenários reais 2026 e 2022, 1º turno): seletor "Teoria dos Senadores" com **Só o veto (1º senador)**, **Fidelidade ao time (1º senador)** e **Time dos 2 senadores (1º ou 2º)** (só 2026), mais um painel comparativo e o teste de compatibilidade. A legenda do gráfico explica a opção escolhida.
+- App (cenários reais 2026 e 2022, 1º turno): seletor "Teoria dos Senadores" com **Primeiro senador**, **Segundo senador** (só 2026) e **Primeiro ou segundo senador** (só 2026), mais um painel comparativo e o teste de compatibilidade. A legenda do gráfico explica a opção escolhida. O objetivo é explorar a hipótese como um "e se": os resultados mostram o que aconteceria SE ela fosse verdadeira e não provam nada sozinhos.
 - `python scripts/senate_analysis.py`: limites, correlações entre urnas, regressão de Goodman e os três cenários.
 - Grupos pelo partido do candidato a senador (PL, PT); demais partidos = "Demais".
 - 2026: cada eleitor vota 2x para Senador e o boletim soma os dois. O 1º voto é aproximado por metade dos votos do partido. 2022: voto único (exato).
 - Limite central: o boletim é agregado por urna. Não existe o par (voto de senador, voto de presidente) de cada eleitor, então a teoria só pode ser testada por limites e inferência ecológica.
-- **Time dos 2 senadores (1º ou 2º)** (2026, 2 votos por eleitor): algum PL (sem PT) = Bolsonaro; algum PT (sem PL) = Lula; um PL e um PT = Indecisos (série própria); nenhum dos dois = Outro. Dentro de cada urna os 2 votos são tratados como independentes: P(só PL) = 1-(1-pl)^2-2*pl*pt; P(só PT) = 1-(1-pt)^2-2*pl*pt; P(ambos) = 2*pl*pt.
+- **Primeiro ou segundo senador** (2026, 2 votos por eleitor): algum PL (sem PT) = Bolsonaro; algum PT (sem PL) = Lula; um PL e um PT = Indecisos (série própria); nenhum dos dois = Outro. Dentro de cada urna os 2 votos são tratados como independentes: P(só PL) = 1-(1-pl)^2-2*pl*pt; P(só PT) = 1-(1-pt)^2-2*pl*pt; P(ambos) = 2*pl*pt.
 - Resultado 2026: PL 34,8% - PT 14,3% - Indecisos 4,7% - Outro 46,2%.
+- Botão **Ignorar os demais (só PL e PT)** (só em "Primeiro ou segundo senador"): tira quem não votou em senador do PL nem do PT. Os percentuais passam a usar só Bolsonaro, Lula e Indecisos (2026: 64,8% - 26,4% - 8,8%).
+- Observação: o boletim não separa o 1º do 2º voto de senador, então "Segundo senador" dá exatamente os mesmos números de "Primeiro senador".
 
 ## Adicionando o 2º turno de 2026 (25/10/2026)
 1. Quando o TSE publicar os arquivos do 2º turno, abra https://cdn.tse.jus.br/estatistica/sead/eleicoes/eleicoes2026/buweb/ e copie o carimbo de data/hora dos zips (`bweb_2t_<UF>_<carimbo>.zip`).

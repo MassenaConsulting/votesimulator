@@ -15,7 +15,7 @@
   const fmt = { format: function (v) { return I.num(v); } };
   const pct = function (v) { return I.pct(v, 1); };
   const cacheD = {};
-  let D = null, semente = 20261004, tok = 0, teoriaAtual = 'nenhuma';
+  let D = null, semente = 20261004, tok = 0, teoriaAtual = 'nenhuma', ppAtual = false;
   const BASE_MS = 2000, MAX_VEL = 10;
 
   let urnas = null, cursor = 0, cum = null, brancos = 0, nulos = 0, compCont = 0;
@@ -100,10 +100,10 @@
       $('boxTeoria').hidden = !(D && D.s_pl);
       if ($('boxTeoria').hidden) { $('teoria').value = 'nenhuma'; $('cardTeoria').hidden = true; }
       else {
-        // "1st or 2nd senator loyal" needs 2 senator votes per voter (2026); 2022 has a single vote
-        const op = $('teoria').querySelector('option[value="senadores"]'), sem = D.senVotos !== 2;
-        op.hidden = op.disabled = sem;
-        if (sem && $('teoria').value === 'senadores') $('teoria').value = 'nenhuma';
+        // "Second senator" and "First or second senator" need 2 senator votes per voter (2026); 2022 has a single vote
+        const sem = D.senVotos !== 2;
+        ['segundo', 'senadores'].forEach(function (v) { $('teoria').querySelector('option[value="' + v + '"]').hidden = $('teoria').querySelector('option[value="' + v + '"]').disabled = sem; });
+        if (sem && ($('teoria').value === 'senadores' || $('teoria').value === 'segundo')) $('teoria').value = 'nenhuma';
       }
     }
   }
@@ -117,6 +117,8 @@
   }
 
   /* ---------- settings ---------- */
+  /* "Ignore the others (only PL and PT)": a toggle that exists only in the "First or second senator" option */
+  function soPLPT() { return !$('boxTeoria').hidden && $('teoria').value === 'senadores' && $('soPP').getAttribute('aria-pressed') === 'true'; }
   function clamp(v, a, b) { return Math.min(b, Math.max(a, v)); }
   function leConfig() {
     const sc = E.SCENARIOS[$('cenario').value];
@@ -127,7 +129,7 @@
     $('eleitores').value = eleitores; $('urnas').value = n;
     return { chave: $('cenario').value, sc: sc, eleitores: eleitores, urnas: n, comparecimento: comp,
              ordem: $('ordem').value, seed: semente,
-             teoria: $('boxTeoria').hidden ? 'nenhuma' : $('teoria').value };
+             teoria: $('boxTeoria').hidden ? 'nenhuma' : $('teoria').value, soPLPT: soPLPT() };
   }
 
   /* ---------- cycle ---------- */
@@ -146,7 +148,7 @@
     for (let i = 0; i < urnas.N; i++) for (let k = 0; k < urnas.K; k++) { tot[k] += urnas.votos[i * urnas.K + k]; }
     tot.forEach(function (v) { soma += v; });
     finais = Array.from(tot, function (v) { return soma ? v / soma * 100 : 0; });
-    teoriaAtual = cfg.teoria;
+    teoriaAtual = cfg.teoria; ppAtual = cfg.soPLPT;
     montaLegenda(cfg.teoria);
     atualizaTeoria(cfg.teoria);
     $('lote').placeholder = tr('cfg.batchPh') + ' (' + loteAuto() + ')';
@@ -200,22 +202,24 @@
   }
 
   /* ---------- Senators Theory: comparison panel ---------- */
-  const KEY_LEGENDA = { exclusao: 'legend.exclusion', fidelidade: 'legend.fidelity', senadores: 'legend.senators' };
-  const KEY_DESC = { nenhuma: 'theory.descOff', exclusao: 'theory.descExclusion', fidelidade: 'theory.descFidelity', senadores: 'theory.descSenators' };
-  const LINHAS_TEORIA = [['nenhuma', 'theory.rowReal'], ['exclusao', 'theory.rowExclusion'], ['fidelidade', 'theory.rowFidelity'], ['senadores', 'theory.rowSenators']];
+  const KEY_LEGENDA = { primeiro: 'legend.first', segundo: 'legend.second', senadores: 'legend.both' };
+  const KEY_DESC = { nenhuma: 'theory.descOff', primeiro: 'theory.descFirst', segundo: 'theory.descSecond', senadores: 'theory.descBoth' };
+  const LINHAS_TEORIA = [['nenhuma', 'theory.rowReal'], ['primeiro', 'theory.rowFirst'], ['segundo', 'theory.rowSecond'], ['senadores', 'theory.rowBoth'], ['senadoresPP', 'theory.rowBothOnly']];
 
   function atualizaTeoria(modo) {
     $('descTeoria').textContent = tr(KEY_DESC[modo] || 'theory.descOff');
     $('boxTeoria').classList.toggle('on', modo && modo !== 'nenhuma');
+    $('boxSoPP').hidden = modo !== 'senadores';
+    const pp = modo === 'senadores' && ppAtual, atual = pp ? 'senadoresPP' : modo;
     if (!D || !D.s_pl) { $('cardTeoria').hidden = true; return; }
     $('cardTeoria').hidden = false;
     if (!D._teoria) D._teoria = E.resumoTeoria(D);
     const r = D._teoria, n = r.nomes, f1 = function (v) { return I.pct(v, 1); };
     const PL = 'Bolsonaro', PT = 'Lula';           // PL = Bolsonaro, PT = Lula (surname only)
     $('thPL').textContent = PL + ' (PL)'; $('thPT').textContent = PT + ' (PT)';
-    $('tabTeoria').innerHTML = LINHAS_TEORIA.filter(function (l) { return r[l[0]]; }).map(function (l) {
+    $('tabTeoria').innerHTML = LINHAS_TEORIA.filter(function (l) { return r[l[0]] && (l[0] !== 'senadoresPP' || pp); }).map(function (l) {
       const x = r[l[0]], venc = x.pl > x.pt ? PL : PT;
-      return '<tr' + (l[0] === modo ? ' style="font-weight:700"' : '') + '><td>' + tr(l[1]) + '</td><td>' + f1(x.pl) + '</td><td>' + f1(x.pt) + '</td><td>' + (x.ind ? f1(x.ind) : '–') + '</td><td>' + f1(x.outros) + '</td><td>' + venc + '</td></tr>';
+      return '<tr' + (l[0] === atual ? ' style="font-weight:700"' : '') + '><td>' + tr(l[1]) + '</td><td>' + f1(x.pl) + '</td><td>' + f1(x.pt) + '</td><td>' + (x.ind ? f1(x.ind) : '–') + '</td><td>' + f1(x.outros) + '</td><td>' + venc + '</td></tr>';
     }).join('');
     const t = r.teste, fm = function (v) { return fmt.format(Math.round(v)); };
     $('teoriaTeste').textContent = tr('theory.test', {
@@ -223,7 +227,7 @@
       vF: fm(t.vF), pF: I.dec(t.vF / t.totF * 100, 2)
     });
     $('teoriaNota').textContent = tr(D.senVotos === 2 ? 'theory.note2026' : 'theory.note2022') + tr('theory.noteParties') +
-      (D.senVotos === 2 ? tr('theory.noteSenators') : '');
+      (D.senVotos === 2 ? tr('theory.noteSenators') + tr('theory.noteSecond') : '');
   }
 
   function loteAuto() { return Math.max(1, Math.ceil(urnas.N / (+$('gran').value || 100))); }
@@ -232,7 +236,7 @@
   /* ---------- drawing ---------- */
   function montaLegenda(modo) {
     const k = KEY_LEGENDA[modo];
-    $('notaLegenda').textContent = k ? tr(k) : '';
+    $('notaLegenda').textContent = k ? tr(k) + (modo === 'senadores' && ppAtual ? tr('legend.bothOnly') : '') : '';
     $('notaLegenda').hidden = !k;
     $('legenda').innerHTML = urnas.series.map(function (s) {
       return '<span><i style="background:' + s.cor + '"></i>' + s.nome + '</span>';
@@ -290,6 +294,11 @@
     $(id).addEventListener('change', reiniciar);
   });
   $('mostrarFinal').addEventListener('change', desenha);
+  $('soPP').addEventListener('click', function () {
+    this.setAttribute('aria-pressed', this.getAttribute('aria-pressed') === 'true' ? 'false' : 'true');
+    reiniciar();
+  });
+  if (window.Track) $('soPP').addEventListener('click', function () { window.Track.event('only_pl_pt_toggle', { on: this.getAttribute('aria-pressed') === 'true' }); });
   // mouse over / touch: shows the cumulative votes at the point, in both charts at once
   ['cLinhas', 'cEspelho'].forEach(function (id) {
     const c = $(id);

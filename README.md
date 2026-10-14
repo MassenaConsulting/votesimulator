@@ -102,13 +102,15 @@ Hover (or touch) any chart: a vertical line shows the ballot boxes counted, the 
 
 ## Senators Theory
 Hypothesis: whoever voted for a PL senator does not vote for Lula; whoever voted for a PT senator does not vote for Bolsonaro.
-- App (real scenarios 2026 and 2022, 1st round): selector "Senators Theory" with **Veto only (1st senator)**, **Team loyalty (1st senator)** and **Two-senator team (1st or 2nd)** (2026 only), plus a comparison panel and the compatibility test. The chart legend explains the selected option.
+- App (real scenarios 2026 and 2022, 1st round): selector "Senators Theory" with **First senator**, **Second senator** (2026 only) and **First or second senator** (2026 only), plus a comparison panel and the compatibility test. The chart legend explains the selected option. The purpose is to explore the hypothesis as a what-if: the results show what would happen IF it were true and prove nothing by themselves.
 - `python scripts/senate_analysis.py`: bounds, correlations between boxes, Goodman regression and the three scenarios.
 - Groups follow the party of the senate candidate (PL, PT); other parties = "Others".
 - 2026: each voter casts 2 votes for Senator and the bulletin sums both. The 1st vote is approximated by half of the party's votes. 2022: single vote (exact).
 - Central limit: the bulletin is aggregated per ballot box. The pair (senator vote, president vote) of each voter does not exist, so the theory can only be tested through bounds and ecological inference.
-- **Two-senator team (1st or 2nd)** (2026, 2 votes per voter): any PL (without PT) = Bolsonaro; any PT (without PL) = Lula; one PL and one PT = Undecided (own series); neither = Other. Inside each box the 2 votes are treated as independent: P(PL only) = 1-(1-pl)^2-2*pl*pt; P(PT only) = 1-(1-pt)^2-2*pl*pt; P(both) = 2*pl*pt.
+- **First or second senator** (2026, 2 votes per voter): any PL (without PT) = Bolsonaro; any PT (without PL) = Lula; one PL and one PT = Undecided (own series); neither = Other. Inside each box the 2 votes are treated as independent: P(PL only) = 1-(1-pl)^2-2*pl*pt; P(PT only) = 1-(1-pt)^2-2*pl*pt; P(both) = 2*pl*pt.
 - 2026 result: PL 34.8% - PT 14.3% - Undecided 4.7% - Other 46.2%.
+- Button **Ignore the others (only PL and PT)** (only in "First or second senator"): removes voters whose senators are neither PL nor PT. The percentages then use only Bolsonaro, Lula and Undecided (2026: 64.8% - 26.4% - 8.8%).
+- Note: the bulletin does not separate the 1st from the 2nd senator vote, so "Second senator" gives exactly the same numbers as "First senator".
 
 ## Adding the 2026 runoff (25 Oct 2026)
 1. When the TSE publishes the runoff files, open https://cdn.tse.jus.br/estatistica/sead/eleicoes/eleicoes2026/buweb/ and copy the timestamp of the zip names (`bweb_2t_<UF>_<timestamp>.zip`).

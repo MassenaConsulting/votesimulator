@@ -240,15 +240,16 @@
   }
 
   /* ---------- Senators Theory ----------
-     Groups per ballot box (1st senator vote): PL -> 'candidate 22', PT -> 'candidate 13', others.
-     In 2026 each voter casts 2 senator votes and the bulletin sums them: the 1st vote is approximated by half of the party's votes.
-       exclusao   : PL-senator voters do not vote for Lula; PT-senator voters do not vote for 22; the rest vote like the box.
-                    (the vote that would go to the vetoed candidate moves to the other options, in the proportion of the box)
-       fidelidade : PL senator = vote for 22, PT senator = vote for 13, any other = others; senator blank/null = blank/null.
-       senadores  : "1st or 2nd senator loyal" (2026 only, 2 votes per voter). Each voter has 2 senator votes:
-                    any PL (without PT) = 22; any PT (without PL) = 13; one PL and one PT = undecided (own series); neither = other.
-                    The bulletin sums the 2 votes per box: p_pl = s_pl/(2C), p_pt = s_pt/(2C) and the 2 votes are treated as independent:
-                    P(PL only) = 1-(1-pl)^2-2*pl*pt, P(PT only) = 1-(1-pt)^2-2*pl*pt, P(PL and PT) = 2*pl*pt, P(neither) = (1-pl-pt)^2. */
+     Purpose: explore the hypothesis "whoever voted for a PL senator does not vote for Lula; whoever voted for a PT senator does not vote for Bolsonaro",
+     moving the real votes of each ballot box as if the hypothesis were true (it is a what-if, it does not prove anything).
+     In 2026 each voter casts 2 senator votes and the bulletin sums them per box, without telling the 1st from the 2nd:
+     each single vote is approximated by half of the party's votes (p_pl = s_pl/(2C), p_pt = s_pt/(2C)). 2022 has a single vote (exact).
+       primeiro  : only the 1st senator vote counts: PL senator = vote for 22, PT senator = vote for 13, any other = others; senator blank/null = blank/null.
+       segundo   : same rule with the 2nd senator vote (2026 only). The bulletin cannot tell the 1st from the 2nd vote, so the numbers equal "primeiro".
+       senadores : "1st or 2nd senator" (2026 only). Any PL (without PT) = 22; any PT (without PL) = 13; one PL and one PT = undecided (own series);
+                   neither = other. The 2 votes are treated as independent inside each box:
+                   P(PL only) = 1-(1-pl)^2-2*pl*pt, P(PT only) = 1-(1-pt)^2-2*pl*pt, P(PL and PT) = 2*pl*pt, P(neither) = (1-pl-pt)^2.
+                   With soPP ("ignore the others"), the 'neither' group is removed: only PL, PT and undecided are counted. */
   function ctxTeoria(U) {
     const K = U.K, cs = U.candidatos;
     return { K: K, iF: cs.findIndex(function (c) { return c.numero === '22'; }), iL: cs.findIndex(function (c) { return c.numero === '13'; }),
@@ -256,12 +257,13 @@
              outro: K > cs.length ? K - 1 : cs.findIndex(function (c) { return c.numero !== '22' && c.numero !== '13'; }) };
   }
   /* fills out[0..K-1] (candidates) + out[K] blank + out[K+1] null + out[K+2] undecided with the votes of box i under the mode */
-  function urnaTeoria(U, modo, i, X, out) {
+  function urnaTeoria(U, modo, i, X, out, soPP) {
     const K = X.K, C = U.comp[i], x = X.x;
     for (let k = 0; k < K; k++) x[k] = C ? U['c' + k][i] / C : 0;
     x[K] = C ? U.bra[i] / C : 0; x[K + 1] = C ? U.nul[i] / C : 0;
     out[K + 2] = 0;
     const tem = (U.s_pl[i] + U.s_pt[i] + U.s_out[i] + U.s_bn[i]) > 0;
+    if (soPP && modo === 'senadores' && !tem) { out.fill(0); return; }   // "ignore the others": boxes without senator data have no PL/PT vote to count
     if (!C || !tem || modo === 'nenhuma') { for (let k = 0; k < K + 2; k++) out[k] = x[k] * C; return; }
     const d = X.sv * C;
     if (modo === 'senadores') {
@@ -269,29 +271,23 @@
       const soPL = 1 - (1 - pl) * (1 - pl) - ambos, soPT = 1 - (1 - pt) * (1 - pt) - ambos;
       out.fill(0);
       out[X.iF] = soPL * C; out[X.iL] = soPT * C; out[K + 2] = ambos * C;
-      out[X.outro] = Math.max(0, 1 - soPL - soPT - ambos) * C;
+      out[X.outro] = soPP ? 0 : Math.max(0, 1 - soPL - soPT - ambos) * C;
       return;
     }
-    const gPL = Math.min(1, U.s_pl[i] / d), gPT = Math.min(1 - gPL, U.s_pt[i] / d), gO = 1 - gPL - gPT;
-    if (modo === 'fidelidade') {
+    const gPL = Math.min(1, U.s_pl[i] / d), gPT = Math.min(1 - gPL, U.s_pt[i] / d);
+    if (modo === 'primeiro' || modo === 'segundo') {   // same rule; the bulletin cannot tell the 1st from the 2nd senator vote
       out.fill(0);
       out[X.iF] = gPL * C; out[X.iL] = gPT * C;
       if (X.demais >= 0) out[X.demais] = U.s_out[i] / d * C;
       out[K] = out[K + 1] = U.s_bn[i] / d * C / 2;
       return;
     }
-    const dL = 1 - x[X.iL], dF = 1 - x[X.iF];
-    for (let k = 0; k < K + 2; k++) {
-      const semL = k === X.iL ? 0 : (dL > 1e-9 ? x[k] / dL : x[k]);
-      const semF = k === X.iF ? 0 : (dF > 1e-9 ? x[k] / dF : x[k]);
-      out[k] = (gO * x[k] + gPL * semL + gPT * semF) * C;
-    }
   }
-  function colunasTeoria(U, modo) {
+  function colunasTeoria(U, modo, soPP) {
     const T = U.n, X = ctxTeoria(U), K = X.K, out = new Float64Array(K + 3);
     const cols = Array.from({ length: K + 3 }, function () { return new Float64Array(T); });
     for (let i = 0; i < T; i++) {
-      urnaTeoria(U, modo, i, X, out);
+      urnaTeoria(U, modo, i, X, out, soPP);
       for (let k = 0; k < K + 3; k++) cols[k][i] = out[k];
     }
     return { c: cols.slice(0, K), bra: cols[K], nul: cols[K + 1], ind: cols[K + 2] };
@@ -302,12 +298,12 @@
     if (!U.s_pl) return null;
     const X = ctxTeoria(U), K = X.K, out = new Float64Array(K + 3), T = U.n;
     const res = {};
-    ['nenhuma', 'exclusao', 'fidelidade'].concat(X.sv === 2 ? ['senadores'] : []).forEach(function (m) {
-      const tot = new Float64Array(K + 3);
-      for (let i = 0; i < T; i++) { urnaTeoria(U, m, i, X, out); for (let k = 0; k < K + 3; k++) tot[k] += out[k]; }
+    ['nenhuma', 'primeiro'].concat(X.sv === 2 ? ['segundo', 'senadores', 'senadoresPP'] : []).forEach(function (m) {
+      const tot = new Float64Array(K + 3), pp = m === 'senadoresPP', modo = pp ? 'senadores' : m;
+      for (let i = 0; i < T; i++) { urnaTeoria(U, modo, i, X, out, pp); for (let k = 0; k < K + 3; k++) tot[k] += out[k]; }
       let val = tot[K + 2]; for (let k = 0; k < K; k++) val += tot[k];
       const pl = tot[X.iF] / val * 100, pt = tot[X.iL] / val * 100, ind = tot[K + 2] / val * 100;
-      res[m] = { pl: pl, pt: pt, ind: ind, outros: 100 - pl - pt - ind, votosPL: tot[X.iF], votosPT: tot[X.iL] };
+      res[m] = { pl: pl, pt: pt, ind: ind, outros: Math.max(0, 100 - pl - pt - ind), votosPL: tot[X.iF], votosPT: tot[X.iL] };
     });
     // minimum contradiction: Lula <= turnout - voters(PL senator) and 22 <= turnout - voters(PT senator)
     let vL = 0, vF = 0, nL = 0, nF = 0, totL = 0, totF = 0, nPL = 0, nPT = 0;
@@ -328,11 +324,11 @@
     const idx = ordenar(U, o.ordem, r);
     const nomes = ['aptos', 'comp', 'bra', 'nul'];
     for (let k = 0; k < K; k++) nomes.push('c' + k);
-    const ind = o.teoria === 'senadores' && !!U.s_pl && U.senVotos === 2, Kx = K + (ind ? 1 : 0);
+    const ind = o.teoria === 'senadores' && !!U.s_pl && U.senVotos === 2, Kx = K + (ind ? 1 : 0), soPP = ind && !!o.soPLPT;
     if (ind) nomes.push('ind');
     const src = nomes.map(function (c) { return U[c]; });
     if (o.teoria && o.teoria !== 'nenhuma' && U.s_pl) {
-      const m = colunasTeoria(U, ind ? 'senadores' : o.teoria);
+      const m = colunasTeoria(U, o.teoria, soPP);
       src[2] = m.bra; src[3] = m.nul;
       for (let k = 0; k < K; k++) src[4 + k] = m.c[k];
       if (ind) src[4 + K] = m.ind;
@@ -366,6 +362,15 @@
       out.series.push({ key: k, nome: tr(k), cor: PALETA[6] });
     }
     if (ind) out.series.push({ key: 'series.undecided', nome: tr('series.undecided'), cor: '#db2777' });
+    if (soPP) {        // "ignore the others": drop the series that have no votes at all (only Bolsonaro, Lula and Undecided stay)
+      const keep = [];
+      for (let k = 0; k < Kx; k++) { let t = 0; for (let j = 0; j < N; j++) t += out.votos[j * Kx + k]; if (t > 0) keep.push(k); }
+      if (keep.length < Kx) {
+        const v = new Float64Array(N * keep.length);
+        for (let j = 0; j < N; j++) keep.forEach(function (k, n) { v[j * keep.length + n] = out.votos[j * Kx + k]; });
+        out.votos = v; out.K = keep.length; out.series = keep.map(function (k) { return out.series[k]; });
+      }
+    }
     out.meta = { fonte: U.fonte, urnasReais: T };
     return out;
   }

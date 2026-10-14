@@ -161,6 +161,7 @@
         <li data-i18n="stheory.g1"></li>
         <li data-i18n="stheory.g2"></li>
         <li data-i18n="stheory.g3"></li>
+        <li data-i18n="stheory.g4"></li>
       </ol>
       <p data-i18n="stheory.p4"></p>
       <ul>
@@ -188,11 +189,15 @@
       <div class="theory-head"><label for="teoria" data-i18n="cfg.theory">Senators Theory</label><span class="tag" data-i18n="cfg.theoryTag">hypothesis</span></div>
       <select id="teoria">
         <option value="nenhuma" data-i18n="theory.off">Off (real votes)</option>
-        <option value="exclusao" data-i18n="theory.exclusion">1st senator: exclusion only</option>
-        <option value="fidelidade" data-i18n="theory.fidelity">1st senator: full loyalty</option>
-        <option value="senadores" data-i18n="theory.senators">1st or 2nd senator loyal</option>
+        <option value="primeiro" data-i18n="theory.first">First senator</option>
+        <option value="segundo" data-i18n="theory.second">Second senator</option>
+        <option value="senadores" data-i18n="theory.both">First or second senator</option>
       </select>
       <p class="hint" id="descTeoria"></p>
+      <div id="boxSoPP" hidden>
+        <button id="soPP" type="button" class="toggle" aria-pressed="false" data-i18n="cfg.onlyPLPT">Ignore the others (only PL and PT)</button>
+        <p class="hint" data-i18n="cfg.onlyPLPTHint"></p>
+      </div>
     </div>
 
     <div class="row">
@@ -244,6 +249,8 @@
         <dd data-i18n="help.themeText">Switches between light and dark colors. Use it when the screen is too bright or too dark.</dd>
         <dt data-i18n="help.useTSE">Use TSE totals</dt>
         <dd data-i18n="help.useTSEText">Fills voters, ballot boxes and turnout with the real TSE numbers. Use it to replay a real election at full size.</dd>
+        <dt data-i18n="help.onlyPLPT">Ignore the others (only PL and PT)</dt>
+        <dd data-i18n="help.onlyPLPTText"></dd>
         <dt data-i18n="help.final">Show final result (dashed)</dt>
         <dd data-i18n="help.finalText">Draws dashed lines where each candidate will end. Turn it off to hide the spoiler.</dd>
       </dl>
