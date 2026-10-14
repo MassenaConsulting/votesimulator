@@ -111,10 +111,11 @@ elif mode == "merge":
     assert M.max() < 65536 and M.min() >= 0, (M.min(), M.max())
     K = V.shape[1] - (4 if C["senado"] else 0)
     names = ["mun", "aptos", "comp", "bra", "nul", "min"] + [f"c{k}" for k in range(K)] + (["s_pl", "s_pt", "s_out", "s_bn"] if C["senado"] else [])
-    blob = uf.astype(np.uint8).tobytes() + b"".join(M[:, j].astype("<u2").tobytes() for j in range(M.shape[1]))
+    # format 2: per column, all low bytes first and then all high bytes ("byte planes"); compresses ~17% better than interleaved uint16
+    blob = uf.astype(np.uint8).tobytes() + b"".join((M[:, j] & 255).astype(np.uint8).tobytes() + (M[:, j] >> 8).astype(np.uint8).tobytes() for j in range(M.shape[1]))
     z = zlib.compress(blob, 9)
     meta = {"fonte": f"TSE - Ballot Box Bulletin (Web), round {C['turno']} {C['ano']} (President), per ballot box",
-            "ano": C["ano"], "turno": C["turno"], "senVotos": C.get("senvotos", 0), "t0": (EPOCH + datetime.timedelta(minutes=t0)).isoformat(),
+            "fmt": 2, "ano": C["ano"], "turno": C["turno"], "senVotos": C.get("senvotos", 0), "t0": (EPOCH + datetime.timedelta(minutes=t0)).isoformat(),
             "n": int(len(a)), "ufs": UFS, "municipios": mlist, "colunas": names,
             "candidatos": [{"numero": n, "nome": allc[n][0], "partido": allc[n][1]} for n in top]}
     js = HEADER + ('window.TSE_DS=window.TSE_DS||{};window.TSE_DS["%s"]=' % key) + json.dumps(meta, ensure_ascii=False, separators=(",", ":")) + \

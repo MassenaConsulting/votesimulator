@@ -52,6 +52,7 @@ data/ballot_boxes_president_2022_round1.js   dados reais (472.028 urnas)
 data/ballot_boxes_president_2022_round2.js   dados reais (472.028 urnas)
 data/aggregated_president_2026_round1.js     agregado por UF x minuto (usado só por statistical_analysis.py)
 scripts/build_ballot_boxes.py                baixa os zips do TSE e gera os arquivos por urna
+scripts/repack_ballot_boxes.py              converte os arquivos de dados para o formato 2, menor
 scripts/build_aggregated_data.py             gera o agregado por UF x minuto
 scripts/statistical_analysis.py              testes de permutação sobre a ordem de chegada
 scripts/senate_analysis.py                   Teoria dos Senadores: limites, correlações, regressão de Goodman, cenários
@@ -65,7 +66,7 @@ Fonte: https://dadosabertos.tse.jus.br/dataset/resultados-2026-boletim-de-urna
   python scripts/build_ballot_boxes.py 2022-2 merge <pasta_temp> data/ballot_boxes_president_2022_round2.js
   ```
   Eleições aceitas: `2026-1`, `2022-1`, `2022-2` (ano-turno). Os arquivos são carregados sob demanda ao escolher o cenário.
-- Formato dos dados: cada arquivo define `window.TSE_DS["<ano>-<turno>"]` com metadados e um bloco binário base64 + zlib (UF em `u8`, depois colunas `u16`). As chaves dos metadados mantêm os nomes originais em português (`fonte`, `candidatos`, `municipios`, `colunas`, ...), pois fazem parte do formato.
+- Formato dos dados: cada arquivo define `window.TSE_DS["<ano>-<turno>"]` com metadados e um bloco binário base64 + zlib (UF em `u8`, depois cada coluna `u16` em dois planos de bytes: todos os bytes baixos, depois todos os altos; `"fmt": 2`). O `scripts/repack_ballot_boxes.py` converte arquivos antigos do formato 1 (cerca de 15% menores após o repack). As chaves dos metadados mantêm os nomes originais em português (`fonte`, `candidatos`, `municipios`, `colunas`, ...), pois fazem parte do formato.
 - Colunas de Senado por urna: `s_pl`, `s_pt`, `s_out`, `s_bn` (votos em PL, PT, outros partidos, brancos + nulos).
 - `scripts/build_aggregated_data.py` gera o agregado por UF x minuto (370 KB), usado só por `statistical_analysis.py`.
 

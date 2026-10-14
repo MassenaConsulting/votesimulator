@@ -174,7 +174,7 @@
     });
   }
 
-  /* downloads (if needed) and decodes the binary block (base64 + zlib) produced by scripts/build_ballot_boxes.py */
+  /* downloads (if needed) and decodes the binary block (base64 + zlib, formats 1 and 2) produced by scripts/build_ballot_boxes.py */
   async function carregarUrnas(chave) {
     if (!(g.TSE_DS && g.TSE_DS[chave])) await carregaScript(ARQUIVOS[chave]);
     const M = g.TSE_DS[chave];
@@ -184,7 +184,14 @@
     const buf = await new Response(new Blob([bytes]).stream().pipeThrough(new DecompressionStream('deflate'))).arrayBuffer();
     const n = M.n, U = { n: n, fonte: M.fonte, ufs: M.ufs, municipios: M.municipios, candidatos: M.candidatos };
     U.uf = new Uint8Array(buf, 0, n);
-    M.colunas.forEach(function (c, j) { U[c] = new Uint16Array(buf.slice(n + j * 2 * n, n + (j + 1) * 2 * n)); });
+    M.colunas.forEach(function (c, j) {
+      const base = n + j * 2 * n;
+      if (M.fmt === 2) {                                   // format 2: low-byte plane, then high-byte plane
+        const lo = new Uint8Array(buf, base, n), hi = new Uint8Array(buf, base + n, n), col = new Uint16Array(n);
+        for (let i = 0; i < n; i++) col[i] = lo[i] | (hi[i] << 8);
+        U[c] = col;
+      } else U[c] = new Uint16Array(buf.slice(base, base + 2 * n));   // format 1: interleaved little-endian uint16
+    });
     U.K = M.colunas.filter(function (c) { return /^c\d+$/.test(c); }).length;
     U.senVotos = M.senVotos || 0;
     return U;

@@ -52,6 +52,7 @@ data/ballot_boxes_president_2022_round1.js   real data (472,028 boxes)
 data/ballot_boxes_president_2022_round2.js   real data (472,028 boxes)
 data/aggregated_president_2026_round1.js     state x minute aggregate (used only by statistical_analysis.py)
 scripts/build_ballot_boxes.py                downloads TSE zips and builds the per-box data files
+scripts/repack_ballot_boxes.py              converts data files to the smaller format 2
 scripts/build_aggregated_data.py             builds the state x minute aggregate
 scripts/statistical_analysis.py              permutation tests on the arrival order
 scripts/senate_analysis.py                   Senators Theory: bounds, correlations, Goodman regression, scenarios
@@ -65,7 +66,7 @@ Source: https://dadosabertos.tse.jus.br/dataset/resultados-2026-boletim-de-urna
   python scripts/build_ballot_boxes.py 2022-2 merge <temp_dir> data/ballot_boxes_president_2022_round2.js
   ```
   Accepted elections: `2026-1`, `2022-1`, `2022-2` (year-round). The files are loaded on demand when a scenario is chosen.
-- Data format: each file defines `window.TSE_DS["<year>-<round>"]` with metadata and a base64 + zlib binary block (state as `u8`, then `u16` columns). The metadata keys keep their original Portuguese names (`fonte`, `candidatos`, `municipios`, `colunas`, ...), because they are part of the data format.
+- Data format: each file defines `window.TSE_DS["<year>-<round>"]` with metadata and a base64 + zlib binary block (state as `u8`, then each `u16` column as two byte planes: all low bytes, then all high bytes; `"fmt": 2`). `scripts/repack_ballot_boxes.py` converts old format 1 files (about 15% smaller after repacking). The metadata keys keep their original Portuguese names (`fonte`, `candidatos`, `municipios`, `colunas`, ...), because they are part of the data format.
 - Senate columns per box: `s_pl`, `s_pt`, `s_out`, `s_bn` (votes for PL, PT, other parties, blank + null).
 - `scripts/build_aggregated_data.py` builds the state x minute aggregate (370 KB), used only by `statistical_analysis.py`.
 

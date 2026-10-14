@@ -19,7 +19,13 @@ def carrega(ano):
     raw = zlib.decompress(base64.b64decode(re.search(r'\.b64="([^"]+)"', s).group(1)))
     n = meta["n"]; d = {}; off = n
     for c in meta["colunas"]:
-        d[c] = np.frombuffer(raw[off:off + 2 * n], dtype="<u2").astype(np.float64); off += 2 * n
+        if meta.get("fmt", 1) == 2:     # byte planes: low bytes, then high bytes
+            lo = np.frombuffer(raw[off:off + n], dtype=np.uint8).astype(np.float64)
+            hi = np.frombuffer(raw[off + n:off + 2 * n], dtype=np.uint8).astype(np.float64)
+            d[c] = lo + 256 * hi
+        else:
+            d[c] = np.frombuffer(raw[off:off + 2 * n], dtype="<u2").astype(np.float64)
+        off += 2 * n
     d["uf"] = np.frombuffer(raw[:n], dtype=np.uint8)
     return meta, d
 
