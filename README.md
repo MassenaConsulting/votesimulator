@@ -86,7 +86,8 @@ Source: https://dadosabertos.tse.jus.br/dataset/resultados-2026-boletim-de-urna
 - `index.html` has title, description, keywords, author, robots, theme color, Open Graph / Twitter tags and JSON-LD (`WebApplication`).
 - Title, description and social tags follow the selected language (pt-BR / en-US). A language can be linked directly with `?lang=pt-BR` or `?lang=en-US`.
 - `<noscript>` shows a short description in both languages.
-- Before publishing: use the full https URL in `og:image` / `twitter:image`, and add `<link rel="canonical">` and `hreflang` links with your final address (they need the real domain).
+- Published at https://votesimulator.org/. `index.html` has the canonical link, `hreflang` alternates (en-US, pt-BR, x-default), `og:url` and absolute `og:image` / `twitter:image` URLs. `robots.txt` and `sitemap.xml` are at the site root.
+- After publishing: verify the domain in Google Search Console and submit `https://votesimulator.org/sitemap.xml`.
 
 ## Interactive charts
 Hover (or touch) any chart: a vertical line shows the ballot boxes counted, the cumulative votes and the % of each series, and the gap between the 1st and the 2nd.

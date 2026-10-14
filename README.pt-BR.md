@@ -86,7 +86,8 @@ Fonte: https://dadosabertos.tse.jus.br/dataset/resultados-2026-boletim-de-urna
 - `index.html` tem título, descrição, palavras-chave, autor, robots, cor do tema, tags Open Graph / Twitter e JSON-LD (`WebApplication`).
 - Título, descrição e tags sociais acompanham o idioma escolhido (pt-BR / en-US). Dá para linkar um idioma direto com `?lang=pt-BR` ou `?lang=en-US`.
 - `<noscript>` mostra uma descrição curta nos dois idiomas.
-- Antes de publicar: use a URL https completa em `og:image` / `twitter:image` e adicione `<link rel="canonical">` e links `hreflang` com o endereço final (eles precisam do domínio real).
+- Publicado em https://votesimulator.org/. O `index.html` tem link canonical, alternativas `hreflang` (en-US, pt-BR, x-default), `og:url` e URLs absolutas em `og:image` / `twitter:image`. `robots.txt` e `sitemap.xml` ficam na raiz do site.
+- Depois de publicar: verifique o domínio no Google Search Console e envie `https://votesimulator.org/sitemap.xml`.
 
 ## Gráficos interativos
 Passe o mouse (ou toque) sobre qualquer gráfico: aparece a linha vertical com urnas apuradas, votos acumulados e % de cada série, e a diferença entre 1º e 2º.

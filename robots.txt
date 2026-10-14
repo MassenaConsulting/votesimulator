@@ -1,0 +1,5 @@
+# Vote Simulator - Massena Consulting LLC
+User-agent: *
+Allow: /
+
+Sitemap: https://votesimulator.org/sitemap.xml
