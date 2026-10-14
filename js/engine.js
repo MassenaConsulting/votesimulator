@@ -79,6 +79,10 @@
       dataset: '2026-1',
       real: true, ordens: ORDENS_REAIS, ordemPadrao: 'chegada'
     },
+    real26b: {
+      dataset: '2026-2',
+      real: true, ordens: ORDENS_REAIS, ordemPadrao: 'chegada'
+    },
     real22b: {
       dataset: '2022-2',
       real: true, ordens: ORDENS_REAIS, ordemPadrao: 'chegada'
@@ -164,7 +168,7 @@
   /* ---------- real TSE data scenario (per ballot box) ---------- */
   const REGIAO = { AC: 0, AM: 0, AP: 0, PA: 0, RO: 0, RR: 0, TO: 0, AL: 1, BA: 1, CE: 1, MA: 1, PB: 1, PE: 1, PI: 1, RN: 1, SE: 1,
                    DF: 2, GO: 2, MT: 2, MS: 2, ES: 3, MG: 3, RJ: 3, SP: 3, PR: 4, RS: 4, SC: 4, ZZ: 5 };
-  const ARQUIVOS = { '2026-1': 'data/ballot_boxes_president_2026_round1.js', '2022-1': 'data/ballot_boxes_president_2022_round1.js', '2022-2': 'data/ballot_boxes_president_2022_round2.js' };
+  const ARQUIVOS = { '2026-1': 'data/ballot_boxes_president_2026_round1.js', '2026-2': 'data/ballot_boxes_president_2026_round2.js', '2022-1': 'data/ballot_boxes_president_2022_round1.js', '2022-2': 'data/ballot_boxes_president_2022_round2.js' };
 
   function carregaScript(src) {
     return new Promise(function (ok, erro) {
@@ -375,5 +379,8 @@
     return gerarSintetico(sc, o);
   }
 
-  g.VoteEngine = { ORDEM_CENARIOS: ['real', 'real22b', 'real22a', 'espelhado', 'virada', 'empate'], SCENARIOS: SCENARIOS, ORDENS: ORDENS, gerar: gerar, resumoReal: resumoReal, carregarUrnas: carregarUrnas, resumoTeoria: resumoTeoria, PALETA: PALETA };
+  /* set to true after data/ballot_boxes_president_2026_round2.js exists (see README: "Adding the 2026 runoff") */
+  const HAS_2026_ROUND2 = false;
+  const LISTA = (HAS_2026_ROUND2 ? ['real', 'real26b'] : ['real']).concat(['real22b', 'real22a', 'espelhado', 'virada', 'empate']);
+  g.VoteEngine = { ORDEM_CENARIOS: LISTA, SCENARIOS: SCENARIOS, ORDENS: ORDENS, gerar: gerar, resumoReal: resumoReal, carregarUrnas: carregarUrnas, resumoTeoria: resumoTeoria, PALETA: PALETA };
 })(window);

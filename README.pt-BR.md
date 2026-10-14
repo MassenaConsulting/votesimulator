@@ -109,6 +109,12 @@ Hipótese: quem votou em senador do PL não vota em Lula; quem votou em senador 
 - **Time dos 2 senadores (1º ou 2º)** (2026, 2 votos por eleitor): algum PL (sem PT) = Bolsonaro; algum PT (sem PL) = Lula; um PL e um PT = Indecisos (série própria); nenhum dos dois = Outro. Dentro de cada urna os 2 votos são tratados como independentes: P(só PL) = 1-(1-pl)^2-2*pl*pt; P(só PT) = 1-(1-pt)^2-2*pl*pt; P(ambos) = 2*pl*pt.
 - Resultado 2026: PL 34,8% - PT 14,3% - Indecisos 4,7% - Outro 46,2%.
 
+## Adicionando o 2º turno de 2026 (25/10/2026)
+1. Quando o TSE publicar os arquivos do 2º turno, abra https://cdn.tse.jus.br/estatistica/sead/eleicoes/eleicoes2026/buweb/ e copie o carimbo de data/hora dos zips (`bweb_2t_<UF>_<carimbo>.zip`).
+2. Para cada UF e depois o merge: `TSE_TS=<carimbo> python scripts/build_ballot_boxes.py 2026-2 uf <pasta_temp> <UF>` (27 UFs + `ZZ` exterior), depois `TSE_TS=<carimbo> python scripts/build_ballot_boxes.py 2026-2 merge <pasta_temp> data/ballot_boxes_president_2026_round2.js`.
+3. No `js/engine.js`, troque `HAS_2026_ROUND2 = true`. O cenário "Dados reais TSE: 2026, 2º turno" aparece na lista (os textos já estão no `js/i18n.js`).
+4. Confira os totais com o resultado oficial antes de publicar.
+
 ## Aviso e licença
 Código aberto sob a [Licença MIT](LICENSE). Código-fonte: https://github.com/MassenaConsulting/votesimulator. Contribuições e forks são bem-vindos.
 

@@ -109,6 +109,12 @@ Hypothesis: whoever voted for a PL senator does not vote for Lula; whoever voted
 - **Two-senator team (1st or 2nd)** (2026, 2 votes per voter): any PL (without PT) = Bolsonaro; any PT (without PL) = Lula; one PL and one PT = Undecided (own series); neither = Other. Inside each box the 2 votes are treated as independent: P(PL only) = 1-(1-pl)^2-2*pl*pt; P(PT only) = 1-(1-pt)^2-2*pl*pt; P(both) = 2*pl*pt.
 - 2026 result: PL 34.8% - PT 14.3% - Undecided 4.7% - Other 46.2%.
 
+## Adding the 2026 runoff (25 Oct 2026)
+1. When the TSE publishes the runoff files, open https://cdn.tse.jus.br/estatistica/sead/eleicoes/eleicoes2026/buweb/ and copy the timestamp of the zip names (`bweb_2t_<UF>_<timestamp>.zip`).
+2. For each state, then merge: `TSE_TS=<timestamp> python scripts/build_ballot_boxes.py 2026-2 uf <temp_dir> <UF>` (27 states + `ZZ` abroad), then `TSE_TS=<timestamp> python scripts/build_ballot_boxes.py 2026-2 merge <temp_dir> data/ballot_boxes_president_2026_round2.js`.
+3. In `js/engine.js`, set `HAS_2026_ROUND2 = true`. The scenario "Real TSE data: 2026, 2nd round" appears in the list (texts are already in `js/i18n.js`).
+4. Check the totals against the official result before publishing.
+
 ## Notice and license
 Open source under the [MIT License](LICENSE). Source code: https://github.com/MassenaConsulting/votesimulator. Contributions and forks are welcome.
 

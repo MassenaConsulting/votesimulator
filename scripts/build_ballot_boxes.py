@@ -8,7 +8,7 @@
 """Per-BALLOT-BOX (section) data for President -> data/ballot_boxes_president_<year>_round<n>.js
   python scripts/build_ballot_boxes.py <election> uf    <temp_dir> <UF>   # downloads and processes one state (.npz cache)
   python scripts/build_ballot_boxes.py <election> merge <temp_dir> <output.js>
-<election>: 2026-1 | 2022-1 | 2022-2   (year-round)
+<election>: 2026-1 | 2026-2 | 2022-1 | 2022-2   (year-round; 2026-2 needs the TSE_TS environment variable)
 Columns per box: municipality, registered voters, turnout, blank, null, arrival minute and candidate votes
 (top 5 candidates + 'others'; with 5 candidates or fewer, all of them).
 Senate columns (when available): s_pl, s_pt, s_out, s_bn = votes for PL, PT, other parties, blank+null."""
@@ -16,12 +16,18 @@ import sys, os, csv, io, json, subprocess, datetime, zlib, base64
 import numpy as np
 CFG = {
     "2026-1": dict(ano=2026, turno=1, ts="051020261403", senado=True, senvotos=2),
+    # 2026 round 2 (runoff, 25 Oct 2026): the timestamp in the zip name is only known once the TSE publishes the files.
+    # Set it with the TSE_TS environment variable (e.g. TSE_TS=251020262130), copy it from the file list at
+    # https://cdn.tse.jus.br/estatistica/sead/eleicoes/eleicoes2026/buweb/ (names look like bweb_2t_AC_<TSE_TS>.zip).
+    "2026-2": dict(ano=2026, turno=2, ts=os.environ.get("TSE_TS", ""), senado=False),
     "2022-1": dict(ano=2022, turno=1, ts="051020221321", senado=True, senvotos=1),
     "2022-2": dict(ano=2022, turno=2, ts="311020221535", senado=False),
 }
 UFS = "AC AL AM AP BA CE DF ES GO MA MG MS MT PA PB PE PI PR RJ RN RO RR RS SC SE SP TO ZZ".split()
 key, mode, tmp = sys.argv[1:4]
-C = CFG[key]; EPOCH = datetime.datetime(2000, 1, 1)
+C = CFG[key]
+if not C["ts"]: sys.exit("Set the TSE_TS environment variable (timestamp of the TSE zip names) for this election.")
+EPOCH = datetime.datetime(2000, 1, 1)
 os.makedirs(tmp, exist_ok=True)
 HEADER = """/*
  * Vote Simulator - ballot-box data, President %d, round %d
