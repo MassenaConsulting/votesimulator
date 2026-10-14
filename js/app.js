@@ -206,6 +206,7 @@
 
   function atualizaTeoria(modo) {
     $('descTeoria').textContent = tr(KEY_DESC[modo] || 'theory.descOff');
+    $('boxTeoria').classList.toggle('on', modo && modo !== 'nenhuma');
     if (!D || !D.s_pl) { $('cardTeoria').hidden = true; return; }
     $('cardTeoria').hidden = false;
     if (!D._teoria) D._teoria = E.resumoTeoria(D);
