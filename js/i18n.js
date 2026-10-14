@@ -24,6 +24,7 @@
       'header.langs': 'This site is available in two languages: English (en-US) and Portuguese (pt-BR). Use the language selector to switch.',
       'lang.label': 'Language / Idioma',
       'footer.copy': 'Massena Consulting LLC, Delaware, USA © 2026. Open source under the MIT License.',
+      'footer.source': 'Source code on GitHub',
 
       'cfg.title': 'Settings',
       'cfg.scenario': 'Scenario',
@@ -206,6 +207,7 @@
       'header.langs': 'Este site está disponível em duas línguas: português (pt-BR) e inglês (en-US). Use o seletor de idioma para alternar.',
       'lang.label': 'Idioma / Language',
       'footer.copy': 'Massena Consulting LLC, Delaware, USA © 2026. Código aberto sob a Licença MIT.',
+      'footer.source': 'Código-fonte no GitHub',
 
       'cfg.title': 'Configuração',
       'cfg.scenario': 'Cenário',
