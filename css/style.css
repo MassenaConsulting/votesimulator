@@ -1,0 +1,100 @@
+/*
+ * Vote Simulator - styles
+ * Copyright (C) 2026 Massena Consulting LLC, Delaware, USA. All rights reserved.
+ *
+ * Study project, provided "AS IS", without warranty of any kind. Massena Consulting LLC is not
+ * responsible for errors, inaccuracies or any consequence of using it.
+ * Election data: public data from the Brazilian Superior Electoral Court (TSE).
+ */
+:root {
+  --bg: #f6f7f9; --card: #ffffff; --text: #1b2330; --muted: #5b6676;
+  --border: #dde1e8; --grid: #e6e9ee; --accent: #2563eb; --accent-text: #ffffff;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #12161d; --card: #1b212b; --text: #e8ecf2; --muted: #9aa5b5;
+    --border: #2d3644; --grid: #2a3340; --accent: #5b8cff; --accent-text: #0b1020;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #12161d; --card: #1b212b; --text: #e8ecf2; --muted: #9aa5b5;
+  --border: #2d3644; --grid: #2a3340; --accent: #5b8cff; --accent-text: #0b1020;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--text);
+  font: 15px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif; }
+header { padding: 16px 16px 4px; max-width: 1200px; margin: 0 auto; }
+header h1 { margin: 0; font-size: 1.35rem; }
+header p { margin: 4px 0 0; color: var(--muted); font-size: .9rem; }
+.topbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.flags { display: flex; align-items: center; gap: 6px; }
+.flag { padding: 3px; border: 2px solid transparent; border-radius: 8px; background: none; line-height: 0; cursor: pointer; }
+.flag svg { width: 34px; height: 24px; border-radius: 3px; box-shadow: 0 0 0 1px rgba(0, 0, 0, .3); opacity: .55; transition: opacity .15s; }
+.flag:hover svg, .flag:focus-visible svg { opacity: 1; }
+.flag[aria-pressed="true"] { border-color: var(--accent); }
+.flag[aria-pressed="true"] svg { opacity: 1; }
+.footer-about { margin: 0 0 8px; }
+.modal-open, .modal-open body { overflow: hidden; }
+.help { margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--border); }
+.help h3 { margin: 0 0 8px; font-size: .95rem; }
+.help dl { margin: 0; }
+.help dt { font-weight: 600; font-size: .85rem; margin-top: 8px; }
+.help dd { margin: 2px 0 0; font-size: .8rem; color: var(--muted); line-height: 1.4; }
+.toolbar { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+dialog { width: min(780px, calc(100vw - 24px)); max-height: calc(100vh - 24px); padding: 0; border: 1px solid var(--border);
+  border-radius: 12px; background: var(--card); color: var(--text); }
+dialog[open] { display: flex; flex-direction: column; }
+dialog::backdrop { background: rgba(10, 14, 22, .6); }
+.modal-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 20px; border-bottom: 1px solid var(--border); }
+.modal-head h2 { margin: 0; font-size: 1.25rem; }
+.modal-body { padding: 6px 20px; overflow-y: auto; overscroll-behavior: contain; }
+.modal-body h3 { margin: 18px 0 6px; font-size: 1.05rem; }
+.modal-body p, .modal-body li { font-size: .95rem; line-height: 1.55; }
+.modal-body p { margin: 8px 0; }
+.modal-body ul, .modal-body ol { margin: 6px 0; padding-left: 22px; }
+.modal-body li { margin: 4px 0; }
+.modal-warn { background: var(--bg); border-left: 4px solid var(--accent); border-radius: 8px; padding: 4px 14px 8px; }
+.modal-warn h3 { margin-top: 10px; }
+.modal-foot { padding: 12px 20px; border-top: 1px solid var(--border); text-align: right; }
+.modal-foot button { min-width: 200px; }
+footer { max-width: 1200px; margin: 0 auto; padding: 8px 16px 24px; color: var(--muted); font-size: .85rem; text-align: center; }
+footer p { margin: 0; }
+main { display: grid; grid-template-columns: 300px 1fr; gap: 16px; padding: 16px;
+  max-width: 1200px; margin: 0 auto; }
+.card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 14px; }
+.card h2 { margin: 0 0 10px; font-size: 1rem; }
+label { display: block; font-size: .85rem; color: var(--muted); margin: 10px 0 3px; }
+select, input[type=number] { width: 100%; padding: 7px 8px; border: 1px solid var(--border);
+  border-radius: 6px; background: var(--bg); color: var(--text); font: inherit; }
+input[type=range] { width: 100%; accent-color: var(--accent); }
+.row { display: flex; gap: 8px; }
+.row > * { flex: 1; min-width: 0; }
+button { padding: 8px 10px; border: 1px solid var(--border); border-radius: 6px;
+  background: var(--card); color: var(--text); font: inherit; cursor: pointer; }
+button.primary { background: var(--accent); color: var(--accent-text); border-color: var(--accent); font-weight: 600; }
+button:hover { filter: brightness(.95); }
+button:focus-visible, select:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.hint { font-size: .8rem; color: var(--muted); margin-top: 6px; }
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 12px; }
+.stat { background: var(--bg); border-radius: 8px; padding: 8px 10px; }
+.stat b { display: block; font-size: 1.1rem; }
+.stat span { font-size: .75rem; color: var(--muted); }
+.progress { height: 8px; background: var(--grid); border-radius: 4px; overflow: hidden; margin-bottom: 12px; }
+.progress div { height: 100%; width: 0; background: var(--accent); transition: width .3s; }
+canvas { width: 100%; height: 300px; display: block; touch-action: pan-y; cursor: crosshair; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 14px; margin: 8px 0 0; font-size: .85rem; }
+.legend i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 5px; vertical-align: -1px; }
+table { width: 100%; border-collapse: collapse; font-size: .88rem; }
+th, td { text-align: right; padding: 6px 8px; border-bottom: 1px solid var(--border); }
+th:first-child, td:first-child { text-align: left; }
+td.bar { width: 28%; }
+.barra { height: 10px; border-radius: 3px; min-width: 1px; }
+.stack { display: grid; gap: 16px; }
+.check { display: flex; align-items: center; gap: 6px; margin-top: 10px; font-size: .85rem; color: var(--muted); }
+.check input { width: auto; }
+.aviso { color: #b45309; font-size: .82rem; margin-top: 6px; }
+@media (max-width: 860px) {
+  main { grid-template-columns: 1fr; }
+  .stats { grid-template-columns: repeat(2, 1fr); }
+}
+@media (prefers-reduced-motion: reduce) { .progress div { transition: none; } }

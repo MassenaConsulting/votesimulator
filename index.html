@@ -1,0 +1,296 @@
+<!doctype html>
+<!--
+  Vote Simulator - main page
+  Copyright (C) 2026 Massena Consulting LLC, Delaware, USA. All rights reserved.
+
+  Study project, provided "AS IS", without warranty of any kind. Massena Consulting LLC is not
+  responsible for errors, inaccuracies or any consequence of using it.
+  Election data: public data from the Brazilian Superior Electoral Court (TSE).
+-->
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vote Counting Simulator &ndash; Real TSE Ballot-Box Data</title>
+
+<!-- SEO: the texts below are replaced by js/i18n.js according to the selected language (pt-BR / en-US) -->
+<meta name="description" content="Study simulator of vote counting: watch real TSE ballot-box data (Brazil 2022, 2026) build live charts, change the arrival order and test the Senators Theory." data-i18n-attr="content:meta.description">
+<meta name="keywords" content="vote counting simulator, election results chart, TSE, Brazil election 2026, ballot box data, mirrored chart, Senators Theory, election data visualization" data-i18n-attr="content:meta.keywords">
+<meta name="author" content="Massena Consulting LLC">
+<meta name="copyright" content="Massena Consulting LLC, Delaware, USA">
+<meta name="application-name" content="Vote Simulator">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#f6f7f9" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#12161d" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+
+<!-- Open Graph / social previews. og:image is relative here: use the full https URL of the published site. -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Vote Simulator">
+<meta property="og:title" content="Vote Counting Simulator &ndash; Real TSE Ballot-Box Data" data-i18n-attr="content:meta.title">
+<meta property="og:description" content="Study simulator of vote counting: watch real TSE ballot-box data (Brazil 2022, 2026) build live charts, change the arrival order and test the Senators Theory." data-i18n-attr="content:meta.description">
+<meta property="og:locale" content="en_US" data-i18n-attr="content:meta.ogLocale">
+<meta property="og:locale:alternate" content="pt_BR" data-i18n-attr="content:meta.ogLocaleAlt">
+<meta property="og:image" content="assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Vote Counting Simulator: live chart of the votes counted by candidate" data-i18n-attr="content:meta.imageAlt">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Vote Counting Simulator &ndash; Real TSE Ballot-Box Data" data-i18n-attr="content:meta.title">
+<meta name="twitter:description" content="Study simulator of vote counting: watch real TSE ballot-box data (Brazil 2022, 2026) build live charts, change the arrival order and test the Senators Theory." data-i18n-attr="content:meta.description">
+<meta name="twitter:image" content="assets/og-image.png">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Vote Counting Simulator",
+  "alternateName": "Simulador de Apuração de Votos",
+  "description": "Study simulator of vote counting with real, public ballot-box data from the Brazilian Superior Electoral Court (TSE). / Simulador de apuração de votos para estudo, com dados reais e públicos de urnas do TSE.",
+  "applicationCategory": "EducationalApplication",
+  "operatingSystem": "Any (web browser)",
+  "inLanguage": ["en-US", "pt-BR"],
+  "isAccessibleForFree": true,
+  "browserRequirements": "Requires JavaScript",
+  "author": { "@type": "Organization", "name": "Massena Consulting LLC" },
+  "copyrightHolder": { "@type": "Organization", "name": "Massena Consulting LLC", "address": { "@type": "PostalAddress", "addressRegion": "Delaware", "addressCountry": "US" } },
+  "copyrightYear": 2026
+}
+</script>
+<link rel="stylesheet" href="css/style.css">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-S3Q0LDS43W"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-S3Q0LDS43W');
+</script>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="flag-br" viewBox="0 0 28 20">
+      <rect width="28" height="20" fill="#009b3a"/>
+      <polygon points="14,2 25.5,10 14,18 2.5,10" fill="#fedf00"/>
+      <circle cx="14" cy="10" r="4.4" fill="#002776"/>
+      <path d="M9.9 9.2 Q14 7.6 18.1 10.9" fill="none" stroke="#fff" stroke-width="1"/>
+    </symbol>
+    <symbol id="flag-us" viewBox="0 0 28 20">
+      <rect width="28" height="20" fill="#fff"/>
+      <g fill="#b22234"><rect y="0.000" width="28" height="1.538"/><rect y="3.077" width="28" height="1.538"/><rect y="6.154" width="28" height="1.538"/><rect y="9.231" width="28" height="1.538"/><rect y="12.308" width="28" height="1.538"/><rect y="15.385" width="28" height="1.538"/><rect y="18.462" width="28" height="1.538"/></g>
+      <rect width="12" height="10.77" fill="#3c3b6e"/>
+      <g fill="#fff"><circle cx="1.20" cy="1.10" r=".55"/><circle cx="3.40" cy="1.10" r=".55"/><circle cx="5.60" cy="1.10" r=".55"/><circle cx="7.80" cy="1.10" r=".55"/><circle cx="10.00" cy="1.10" r=".55"/><circle cx="2.30" cy="3.00" r=".55"/><circle cx="4.50" cy="3.00" r=".55"/><circle cx="6.70" cy="3.00" r=".55"/><circle cx="8.90" cy="3.00" r=".55"/><circle cx="1.20" cy="4.90" r=".55"/><circle cx="3.40" cy="4.90" r=".55"/><circle cx="5.60" cy="4.90" r=".55"/><circle cx="7.80" cy="4.90" r=".55"/><circle cx="10.00" cy="4.90" r=".55"/><circle cx="2.30" cy="6.80" r=".55"/><circle cx="4.50" cy="6.80" r=".55"/><circle cx="6.70" cy="6.80" r=".55"/><circle cx="8.90" cy="6.80" r=".55"/><circle cx="1.20" cy="8.70" r=".55"/><circle cx="3.40" cy="8.70" r=".55"/><circle cx="5.60" cy="8.70" r=".55"/><circle cx="7.80" cy="8.70" r=".55"/><circle cx="10.00" cy="8.70" r=".55"/></g>
+    </symbol>
+  </defs>
+</svg>
+<noscript>
+  <p style="padding:16px;max-width:900px;margin:0 auto">
+    <strong>Vote Counting Simulator.</strong> Study simulator of vote counting with real, public TSE ballot-box data (Brazil 2022 and 2026). JavaScript is required to run it.<br>
+    <strong>Simulador de Apuração de Votos.</strong> Simulador de apuração para estudo, com dados reais e públicos de urnas do TSE (2022 e 2026). É necessário ativar o JavaScript.
+  </p>
+</noscript>
+<header>
+  <div class="topbar">
+    <h1 data-i18n="app.title">Vote Counting Simulator</h1>
+    <div class="toolbar">
+      <button id="sobre" type="button" data-i18n="btn.about" data-i18n-attr="title:btn.aboutTitle">About &amp; warnings</button>
+      <div class="flags" role="group" aria-label="Language / Idioma" data-i18n-attr="aria-label:lang.label">
+<button type="button" class="flag" data-lang="pt-BR" aria-pressed="false" title="Português (Brasil)" aria-label="Português (Brasil)"><svg viewBox="0 0 28 20" aria-hidden="true" focusable="false"><use href="#flag-br"/></svg></button>
+<button type="button" class="flag" data-lang="en-US" aria-pressed="false" title="English (United States)" aria-label="English (United States)"><svg viewBox="0 0 28 20" aria-hidden="true" focusable="false"><use href="#flag-us"/></svg></button>
+</div>
+    </div>
+  </div>
+  <p data-i18n="header.intro">Academic project. Shows how the chart evolves as ballot boxes arrive, in several scenarios. Base: TSE ballot-box bulletins (President, 2026 and 2022).</p>
+</header>
+<dialog id="modal" aria-labelledby="modalTitle">
+  <div class="modal-head">
+    <h2 id="modalTitle" data-i18n="modal.title">Welcome! Please read this first</h2>
+    <div class="flags" role="group" aria-label="Language / Idioma" data-i18n-attr="aria-label:lang.label">
+<button type="button" class="flag" data-lang="pt-BR" aria-pressed="false" title="Português (Brasil)" aria-label="Português (Brasil)"><svg viewBox="0 0 28 20" aria-hidden="true" focusable="false"><use href="#flag-br"/></svg></button>
+<button type="button" class="flag" data-lang="en-US" aria-pressed="false" title="English (United States)" aria-label="English (United States)"><svg viewBox="0 0 28 20" aria-hidden="true" focusable="false"><use href="#flag-us"/></svg></button>
+</div>
+  </div>
+  <div class="modal-body">
+
+    <section class="modal-warn">
+      <h3 data-i18n="warn.title">Important warnings</h3>
+      <ul>
+        <li data-i18n="header.study">This project was built for study purposes, although it uses real, public data obtained from the TSE website.</li>
+        <li data-i18n="header.langs">This site is available in two languages: English (en-US) and Portuguese (pt-BR). Use the language selector to switch.</li>
+        <li data-i18n="warn.data">The numbers come from public files of the TSE (the Brazilian Superior Electoral Court). This project is not connected to the TSE and is not approved by it.</li>
+        <li data-i18n="warn.asis">This is a study project, offered "as is". It can have mistakes, and Massena Consulting LLC is not responsible for errors or for anything that happens because someone used it.</li>
+        <li data-i18n="warn.noPrediction">Nothing here predicts or proves anything about elections. It is only a way to learn how counting charts behave.</li>
+        <li data-i18n="warn.analytics">This site uses Google Analytics to count visits and clicks (anonymous usage data, such as which buttons are used). It does not collect what you type.</li>
+        <li data-i18n="warn.rights">&copy; 2026 Massena Consulting LLC, Delaware, USA. All rights reserved.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h3 data-i18n="how.title">How does the app work? (explained like you are 8 years old)</h3>
+      <p data-i18n="how.p1"></p>
+      <p data-i18n="how.p2"></p>
+      <p data-i18n="how.p3"></p>
+      <ul>
+        <li data-i18n="how.li1"></li>
+        <li data-i18n="how.li2"></li>
+        <li data-i18n="how.li3"></li>
+        <li data-i18n="how.li4"></li>
+        <li data-i18n="how.li5"></li>
+      </ul>
+      <p data-i18n="how.p4"></p>
+      <p data-i18n="how.p5"></p>
+      <p data-i18n="how.p6"></p>
+    </section>
+
+    <section>
+      <h3 data-i18n="stheory.title">The Senators Theory (explained like you are 8 years old)</h3>
+      <p data-i18n="stheory.p1"></p>
+      <p data-i18n="stheory.p2"></p>
+      <p data-i18n="stheory.p3"></p>
+      <ol>
+        <li data-i18n="stheory.g1"></li>
+        <li data-i18n="stheory.g2"></li>
+        <li data-i18n="stheory.g3"></li>
+      </ol>
+      <p data-i18n="stheory.p4"></p>
+      <ul>
+        <li data-i18n="stheory.l1"></li>
+        <li data-i18n="stheory.l2"></li>
+        <li data-i18n="stheory.l3"></li>
+      </ul>
+    </section>
+  </div>
+  <div class="modal-foot">
+    <button id="modalOk" class="primary" type="button" autofocus data-i18n="modal.ok">Got it, let's start!</button>
+  </div>
+</dialog>
+<main>
+  <section class="card" aria-label="Settings" data-i18n-attr="aria-label:cfg.title">
+    <h2 data-i18n="cfg.title">Settings</h2>
+    <label for="cenario" data-i18n="cfg.scenario">Scenario</label>
+    <select id="cenario"></select>
+    <p class="hint" id="descCenario"></p>
+
+    <label for="ordem" data-i18n="cfg.order">Ballot-box arrival order</label>
+    <select id="ordem"></select>
+
+    <div id="boxTeoria" hidden>
+      <label for="teoria" data-i18n="cfg.theory">Senators Theory</label>
+      <select id="teoria">
+        <option value="nenhuma" data-i18n="theory.off">Off (real votes)</option>
+        <option value="exclusao" data-i18n="theory.exclusion">1st senator: exclusion only</option>
+        <option value="fidelidade" data-i18n="theory.fidelity">1st senator: full loyalty</option>
+        <option value="senadores" data-i18n="theory.senators">1st or 2nd senator loyal</option>
+      </select>
+      <p class="hint" id="descTeoria"></p>
+    </div>
+
+    <div class="row">
+      <div><label for="eleitores" data-i18n="cfg.voters">Voters</label><input id="eleitores" type="number" min="1000" max="1000000000" step="1000" value="100000"></div>
+      <div><label for="urnas" data-i18n="cfg.boxes">Ballot boxes</label><input id="urnas" type="number" min="10" max="500000" step="10" value="500"></div>
+    </div>
+    <div class="row">
+      <div><label for="comparecimento" data-i18n="cfg.turnout">Turnout (%)</label><input id="comparecimento" type="number" min="10" max="100" step="any" value="79"></div>
+      <div><label for="lote" data-i18n="cfg.batch">Boxes per update</label><input id="lote" type="number" min="1" placeholder="auto"></div>
+    </div>
+    <label for="gran" data-i18n="cfg.gran">Update granularity</label>
+    <select id="gran">
+      <option value="100" data-i18n="gran.smooth">Smooth (~100 updates)</option>
+      <option value="30" data-i18n="gran.medium">Medium (~30)</option>
+      <option value="10" data-i18n="gran.coarse">Large batches (~10)</option>
+    </select>
+    <button id="usarTSE" type="button" style="width:100%;margin-top:10px" data-i18n="cfg.useTSE">Use TSE totals</button>
+    <p class="aviso" id="aviso" hidden></p>
+
+    <label for="velocidade"><span data-i18n="speed.speed">Speed:</span> <b id="velTxt">1x</b> (<span data-i18n="speed.every">updates every</span> <span id="intTxt">2.0</span> <span data-i18n="speed.sec">s</span>)</label>
+    <input id="velocidade" type="range" min="1" max="10" step="1" value="1">
+
+    <div class="row" style="margin-top:12px">
+      <button id="iniciar" class="primary" type="button" data-i18n="btn.start">Start</button>
+      <button id="acelerar" type="button" data-i18n="btn.accel">Speed up (10x)</button>
+      <button id="totalizar" type="button" data-i18n="btn.total" data-i18n-attr="title:btn.totalTitle">Count without animation</button>
+    </div>
+    <div class="row" style="margin-top:8px">
+      <button id="reiniciar" type="button" data-i18n="btn.restart">Restart</button>
+      <button id="sorteio" type="button" data-i18n="btn.shuffle" data-i18n-attr="title:btn.shuffleTitle">Shuffle</button>
+      <button id="tema" type="button" data-i18n="btn.theme">Theme</button>
+    </div>
+    <label class="check"><input id="mostrarFinal" type="checkbox" checked> <span data-i18n="opt.showFinal">Show final result (dashed)</span></label>
+
+    <div class="help" role="note">
+      <h3 data-i18n="help.title">What does each button do?</h3>
+      <dl>
+        <dt data-i18n="help.start">Start / Pause / Resume</dt>
+        <dd data-i18n="help.startText">Starts the count. While it runs the button turns into Pause; after pausing it becomes Resume. Use it to watch the chart grow, one update at a time.</dd>
+        <dt data-i18n="help.accel">Speed up (10x)</dt>
+        <dd data-i18n="help.accelText">Jumps to 10x speed; click again to go back to the speed you had. Use it when you are in a hurry but still want to see the movement. The speed bar sets any speed from 1x to 10x.</dd>
+        <dt data-i18n="help.total">Count without animation</dt>
+        <dd data-i18n="help.totalText">Draws the whole count at once. Use it to see the final picture or to compare scenarios quickly.</dd>
+        <dt data-i18n="help.restart">Restart</dt>
+        <dd data-i18n="help.restartText">Clears the count and starts over with the same settings. Use it to watch it again.</dd>
+        <dt data-i18n="help.shuffle">Shuffle</dt>
+        <dd data-i18n="help.shuffleText">Draws a new random order for the ballot boxes and restarts. Use it to see how luck in the arrival order changes the curve. It only matters in random orders.</dd>
+        <dt data-i18n="help.theme">Theme</dt>
+        <dd data-i18n="help.themeText">Switches between light and dark colors. Use it when the screen is too bright or too dark.</dd>
+        <dt data-i18n="help.useTSE">Use TSE totals</dt>
+        <dd data-i18n="help.useTSEText">Fills voters, ballot boxes and turnout with the real TSE numbers. Use it to replay a real election at full size.</dd>
+        <dt data-i18n="help.final">Show final result (dashed)</dt>
+        <dd data-i18n="help.finalText">Draws dashed lines where each candidate will end. Turn it off to hide the spoiler.</dd>
+      </dl>
+      <p class="hint" data-i18n="help.note">Changing any setting restarts the count by itself.</p>
+    </div>
+  </section>
+
+  <div class="stack">
+    <section class="card" aria-label="Votes counted by candidate" data-i18n-attr="aria-label:card.mirror">
+      <div class="stats">
+        <div class="stat"><b id="sUrnas">0 / 0</b><span data-i18n="stat.boxes">ballot boxes counted</span></div>
+        <div class="stat"><b id="sVotos">0</b><span data-i18n="stat.votes">votes counted</span></div>
+        <div class="stat"><b id="sLider">–</b><span data-i18n="stat.leader">current leader</span></div>
+        <div class="stat"><b id="sViradas">0</b><span data-i18n="stat.swaps">lead changes</span></div>
+      </div>
+      <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="prog"><div id="progBar"></div></div>
+      <h2 data-i18n="card.mirror">Votes counted by candidate</h2>
+      <canvas id="cEspelho" role="img" aria-label="Mirrored chart of the top two candidates" data-i18n-attr="aria-label:card.mirrorAria"></canvas>
+    </section>
+
+    <section class="card" aria-label="% of valid votes during the count" data-i18n-attr="aria-label:card.lines">
+      <h2 data-i18n="card.lines">% of valid votes during the count</h2>
+      <canvas id="cLinhas" role="img" aria-label="Line chart of the count" data-i18n-attr="aria-label:card.linesAria"></canvas>
+      <div class="legend" id="legenda"></div>
+      <p class="hint" id="notaLegenda"></p>
+    </section>
+
+    <section class="card" id="cardTeoria" aria-label="Senators Theory" data-i18n-attr="aria-label:card.theoryAria" hidden>
+      <h2 data-i18n="card.theory">Senators Theory: whoever votes for a PL senator does not vote for Lula, whoever votes for a PT senator does not vote for Bolsonaro</h2>
+      <table>
+        <thead><tr><th data-i18n="th.scenario">Scenario</th><th id="thPL"></th><th id="thPT"></th><th data-i18n="th.undecided">Undecided</th><th data-i18n="th.others">Others</th><th data-i18n="th.winner">Winner</th></tr></thead>
+        <tbody id="tabTeoria"></tbody>
+      </table>
+      <p class="hint" id="teoriaTeste"></p>
+      <p class="hint" id="teoriaNota"></p>
+    </section>
+
+    <section class="card" aria-label="Partial totals" data-i18n-attr="aria-label:card.totals">
+      <h2 data-i18n="card.totals">Partial totals</h2>
+      <table>
+        <thead><tr><th data-i18n="th.cand">Candidate / party</th><th data-i18n="th.votes">Votes</th><th data-i18n="th.valid">% valid</th><th class="bar"></th></tr></thead>
+        <tbody id="tabela"></tbody>
+      </table>
+    </section>
+  </div>
+</main>
+<footer>
+  <p class="footer-about"><button id="sobreRodape" type="button" data-i18n="btn.about" data-i18n-attr="title:btn.aboutTitle">About &amp; warnings</button></p>
+  <p data-i18n="footer.copy">Massena Consulting LLC, Delaware, USA &copy; 2026. All rights reserved.</p>
+</footer>
+<script src="js/analytics.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/engine.js"></script>
+<script src="js/charts.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

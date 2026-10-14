@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Vote Simulator - favicon
+  Copyright (C) 2026 Massena Consulting LLC, Delaware, USA. All rights reserved.
+  Study project, provided "AS IS", without warranty of any kind. Massena Consulting LLC is not
+  responsible for errors, inaccuracies or any consequence of using it.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Vote Simulator">
+  <rect width="64" height="64" rx="12" fill="#12161d"/>
+  <path d="M8 34 L22 24 L36 28 L56 14" fill="none" stroke="#5b8cff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M8 34 L22 44 L36 40 L56 52" fill="none" stroke="#dc2626" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <line x1="6" y1="34" x2="58" y2="34" stroke="#9aa5b5" stroke-width="2" stroke-dasharray="3 3"/>
+</svg>
