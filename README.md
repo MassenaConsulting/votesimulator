@@ -89,6 +89,12 @@ Source: https://dadosabertos.tse.jus.br/dataset/resultados-2026-boletim-de-urna
 - Published at https://votesimulator.org/. `index.html` has the canonical link, `hreflang` alternates (en-US, pt-BR, x-default), `og:url` and absolute `og:image` / `twitter:image` URLs. `robots.txt` and `sitemap.xml` are at the site root.
 - After publishing: verify the domain in Google Search Console and submit `https://votesimulator.org/sitemap.xml`.
 
+## Analytics (Google Analytics 4)
+- `index.html` loads the gtag snippet; `js/analytics.js` sends the events. Only element ids and option values are sent, never typed text. The welcome dialog tells visitors about it.
+- Events: `button_click`, `language_select`, `setting_change`, `speed_set`, `simulation_complete`, `dialog_open`, `dialog_close`, `chart_hover`, `scroll_depth`, `engagement_time`, `link_click`, `js_error`.
+- Recommended key events (conversions), set in GA4 under Admin > Events > "Mark as key event": `simulation_complete` (a visitor watched a full count) and `language_select`.
+- Recommended custom dimensions (Admin > Custom definitions, event scope): `language`, `setting`, `value`, `button_id`, `scenario`, `order`, `theory`. Without them these parameters do not show in reports.
+
 ## Interactive charts
 Hover (or touch) any chart: a vertical line shows the ballot boxes counted, the cumulative votes and the % of each series, and the gap between the 1st and the 2nd.
 

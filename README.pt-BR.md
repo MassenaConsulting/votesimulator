@@ -89,6 +89,12 @@ Fonte: https://dadosabertos.tse.jus.br/dataset/resultados-2026-boletim-de-urna
 - Publicado em https://votesimulator.org/. O `index.html` tem link canonical, alternativas `hreflang` (en-US, pt-BR, x-default), `og:url` e URLs absolutas em `og:image` / `twitter:image`. `robots.txt` e `sitemap.xml` ficam na raiz do site.
 - Depois de publicar: verifique o domínio no Google Search Console e envie `https://votesimulator.org/sitemap.xml`.
 
+## Analytics (Google Analytics 4)
+- O `index.html` carrega o snippet gtag; o `js/analytics.js` envia os eventos. Só ids de elementos e valores de opções são enviados, nunca texto digitado. O aviso de boas-vindas informa o visitante.
+- Eventos: `button_click`, `language_select`, `setting_change`, `speed_set`, `simulation_complete`, `dialog_open`, `dialog_close`, `chart_hover`, `scroll_depth`, `engagement_time`, `link_click`, `js_error`.
+- Eventos principais (conversões) recomendados, no GA4 em Admin > Eventos > "Marcar como evento principal": `simulation_complete` (visitante viu uma apuração completa) e `language_select`.
+- Dimensões personalizadas recomendadas (Admin > Definições personalizadas, escopo de evento): `language`, `setting`, `value`, `button_id`, `scenario`, `order`, `theory`. Sem elas, esses parâmetros não aparecem nos relatórios.
+
 ## Gráficos interativos
 Passe o mouse (ou toque) sobre qualquer gráfico: aparece a linha vertical com urnas apuradas, votos acumulados e % de cada série, e a diferença entre 1º e 2º.
 
